@@ -1,8 +1,9 @@
 %{?_javapackages_macros:%_javapackages_macros}
 Name:           maven-invoker
 Version:        2.1.1
-Release:        7.1%{?dist}
+Release:        11.1
 Summary:        Fires a maven build in a clean environment
+Group:		Development/Java
 License:        ASL 2.0
 URL:            http://maven.apache.org/shared/maven-invoker/
 Source0:        http://repo1.maven.org/maven2/org/apache/maven/shared/%{name}/%{version}/%{name}-%{version}-source-release.zip
@@ -12,16 +13,12 @@ Patch1:         %{name}-MSHARED-279.patch
 BuildArch:      noarch
 
 BuildRequires:  java-devel
-BuildRequires:  jpackage-utils
 BuildRequires:  junit
 BuildRequires:  maven-local
 BuildRequires:  maven-surefire-provider-junit
 BuildRequires:  maven-shared
-Requires:       java
-Requires:       jpackage-utils
-Requires:       maven-shared
-Requires:       plexus-containers-component-annotations
-Requires:       plexus-utils
+# Required by tests
+BuildRequires:  maven-clean-plugin
 
 Obsoletes:      maven-shared-invoker < %{version}-%{release}
 Provides:       maven-shared-invoker = %{version}-%{release}
@@ -38,10 +35,8 @@ InvocationOutputHandlers.
 This is a replacement package for maven-shared-invoker
 
 %package javadoc
-
 Summary:        Javadoc for %{name}
-Requires:       jpackage-utils
-    
+ 
 %description javadoc
 API documentation for %{name}.
 
@@ -52,32 +47,16 @@ API documentation for %{name}.
 %patch1 -p1
 
 %build
-mvn-rpmbuild package javadoc:aggregate -Dmaven.test.failure.ignore
+%mvn_build
 
 %install
-# JAR
-install -Ddm 755 %{buildroot}/%{_javadir}
-install -Dpm 644 target/%{name}-%{version}.jar %{buildroot}%{_javadir}/%{name}.jar
+%mvn_install
 
-# POM
-install -Ddm 755 %{buildroot}/%{_mavenpomdir}
-install -Dpm 644 pom.xml %{buildroot}%{_mavenpomdir}/JPP-%{name}.pom
-
-# JavaDoc
-install -Ddm 755 %{buildroot}/%{_javadocdir}/%{name}
-cp -pr target/site/apidocs/* %{buildroot}%{_javadocdir}/%{name}
-
-%add_maven_depmap JPP-%{name}.pom %{name}.jar
-
-%files
+%files -f .mfiles
 %doc LICENSE NOTICE
-%{_javadir}/%{name}.jar
-%{_mavenpomdir}/JPP-%{name}.pom
-%{_mavendepmapfragdir}/%{name}
 
-%files javadoc
+%files javadoc -f .mfiles-javadoc
 %doc LICENSE NOTICE
-%doc %{_javadocdir}/%{name}
 
 
 %changelog
