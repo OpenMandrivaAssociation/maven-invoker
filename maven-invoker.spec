@@ -1,7 +1,7 @@
 %{?_javapackages_macros:%_javapackages_macros}
 Name:           maven-invoker
 Version:        2.1.1
-Release:        11.1
+Release:        11.2
 Summary:        Fires a maven build in a clean environment
 Group:		Development/Java
 License:        ASL 2.0
