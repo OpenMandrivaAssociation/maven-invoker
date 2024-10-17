@@ -5,7 +5,7 @@ Release:        11.3
 Summary:        Fires a maven build in a clean environment
 Group:		Development/Java
 License:        ASL 2.0
-URL:            http://maven.apache.org/shared/maven-invoker/
+URL:            https://maven.apache.org/shared/maven-invoker/
 Source0:        http://repo1.maven.org/maven2/org/apache/maven/shared/%{name}/%{version}/%{name}-%{version}-source-release.zip
 Patch0:         %{name}-MSHARED-278.patch
 Patch1:         %{name}-MSHARED-279.patch
